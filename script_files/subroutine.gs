@@ -31,19 +31,6 @@ function CreatePayload(...args) {
 
 
 
-function TransformCheckinData(data) {
-  var transformedData = [];
-  for (var key in data) {
-    if (data.hasOwnProperty(key)) {
-      transformedData.push({
-        cleaningId: key,
-        hasCheckinOnDate: data[key].hasCheckinOnDate
-      });
-    }
-  }
-  return transformedData;
-}
-
 function TransformData(data, keyName1, keyName2) {
   var transformedData = [];
   for (var key in data) {
@@ -52,19 +39,6 @@ function TransformData(data, keyName1, keyName2) {
       newObject[keyName1] = key;
       newObject[keyName2] = data[key];
       transformedData.push(newObject);
-    }
-  }
-  return transformedData;
-}
-
-function TransformCleaningStatus(jsonData) {
-  const transformedData = [];
-  for (const key in jsonData) {
-    if (jsonData.hasOwnProperty(key)) {
-      transformedData.push({
-        cleaningId: key,
-        status: jsonData[key]
-      });
     }
   }
   return transformedData;
