@@ -1,26 +1,20 @@
 /**
- * 関数リスト:
- * CreatePayload(...args): 与えられた引数からペイロードオブジェクトを作成
- * 
- * TransformCheckinData(data)
- * 
- * TransformCleaningStatus(jsonData)
- * 
- * OutputJsonToSheet(jsonData, sheetId, sheetName): 指定されたGoogleシートにJSONデータを出力
- * 
- * CallApi(accessToken, apiUrl, method, payload): 指定されたパラメータでAPIを呼び出し、JSONレスポンスを返す
- * 
- * GetToken(): 保存されたプロパティからまたはログインリクエストを介してアクセストークンを取得
- * 
- * GetColumnDataByHeader(): 指定した文字列と一致したカラムの全データを取得
+ * 関数一覧:
+ * 1. CreatePayload(...args)
+ * 2. TransformData(data, keyName1, keyName2)
+ * 3. FlattenObject(obj, parent = '', res = {})
+ * 4. OutputJsonToSheet(jsonData, sheetId, sheetName)
+ * 5. CallApi(accessToken, apiUrl, method, payload=null)
+ * 6. GetToken()
+ * 7. GetColumnDataByHeader(searchString, sheetId, sheetName)
  */
 
 
 
 function CreatePayload(...args) {
-  var payload = {};
+  let payload = {};
   args.forEach(function(arg) {
-    for (var key in arg) {
+    for (let key in arg) {
       if (arg.hasOwnProperty(key)) {
         payload[key] = arg[key];
       }
@@ -32,10 +26,10 @@ function CreatePayload(...args) {
 
 
 function TransformData(data, keyName1, keyName2) {
-  var transformedData = [];
+  let transformedData = [];
   for (var key in data) {
     if (data.hasOwnProperty(key)) {
-      var newObject = {};
+      let newObject = {};
       newObject[keyName1] = key;
       newObject[keyName2] = data[key];
       transformedData.push(newObject);
@@ -62,10 +56,10 @@ function FlattenObject(obj, parent = '', res = {}) {
 
 function OutputJsonToSheet(jsonData, sheetId, sheetName) {
   // スプレッドシートを取得
-  var spreadsheet = SpreadsheetApp.openById(sheetId);
+  const spreadsheet = SpreadsheetApp.openById(sheetId);
   
   // 指定されたシートを取得
-  var sheet = spreadsheet.getSheetByName(sheetName);
+  const sheet = spreadsheet.getSheetByName(sheetName);
   
   // シートが存在しない場合はエラーをスロー
   if (!sheet) {
@@ -76,16 +70,16 @@ function OutputJsonToSheet(jsonData, sheetId, sheetName) {
   sheet.clear();
 
   // JSONデータのキーを取得（列ヘッダー用）
-  var keys = Object.keys(jsonData[0]);
+  const keys = Object.keys(jsonData[0]);
 
   // シートにヘッダーを書き込む
-  for (var i = 0; i < keys.length; i++) {
+  for (let i = 0; i < keys.length; i++) {
     sheet.getRange(1, i + 1).setValue(keys[i]);
   }
 
   // シートにデータを書き込む
-  for (var row = 0; row < jsonData.length; row++) {
-    for (var col = 0; col < keys.length; col++) {
+  for (let row = 0; row < jsonData.length; row++) {
+    for (let col = 0; col < keys.length; col++) {
       sheet.getRange(row + 2, col + 1).setValue(jsonData[row][keys[col]]);
     }
   }
@@ -95,13 +89,13 @@ function OutputJsonToSheet(jsonData, sheetId, sheetName) {
 
 function CallApi(accessToken, apiUrl, method, payload=null) {
   // リクエストヘッダーの設定
-  var headers = {
+  const headers = {
     'Authorization': 'Bearer ' + accessToken,
     'Content-Type': 'application/json'
   };
   
   // オプションの設定
-  var options = {
+  const options = {
     'method': method,
     'headers': headers
   };
@@ -112,7 +106,7 @@ function CallApi(accessToken, apiUrl, method, payload=null) {
   }
   
   // リクエストを送信し、レスポンスを取得
-  var response = UrlFetchApp.fetch(apiUrl, options);
+  const response = UrlFetchApp.fetch(apiUrl, options);
   
   // レスポンスをJSON形式で返す
   return JSON.parse(response.getContentText());
@@ -172,8 +166,8 @@ function GetToken() {
 
 function GetColumnDataByHeader(searchString, sheetId, sheetName) {
   // スプレッドシートとシートを取得
-  var spreadsheet = SpreadsheetApp.openById(sheetId);
-  var sheet = spreadsheet.getSheetByName(sheetName);
+  const spreadsheet = SpreadsheetApp.openById(sheetId);
+  const sheet = spreadsheet.getSheetByName(sheetName);
   
   // シートが存在しない場合はnullを返す
   if (!sheet) {
@@ -181,10 +175,10 @@ function GetColumnDataByHeader(searchString, sheetId, sheetName) {
   }
   
   // 1行目のデータを取得
-  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
   
   // 文字列Aが存在するカラムを探す
-  var columnIndex = headers.indexOf(searchString);
+  const columnIndex = headers.indexOf(searchString);
   
   // 文字列Aが見つからない場合はnullを返す
   if (columnIndex === -1) {
@@ -192,15 +186,11 @@ function GetColumnDataByHeader(searchString, sheetId, sheetName) {
   }
   
   // カラムの全データを取得
-  var columnData = sheet.getRange(2, columnIndex + 1, sheet.getLastRow() - 1, 1).getValues();
+  const columnData = sheet.getRange(2, columnIndex + 1, sheet.getLastRow() - 1, 1).getValues();
   
   // リスト形式に変換
-  var dataList = columnData.map(function(row) {
+  const dataList = columnData.map(function(row) {
     return row[0];
   });
   return dataList;
 }
-
-
-
-
