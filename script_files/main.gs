@@ -19,7 +19,7 @@
 
 
 function main() {
-  PushToGitHub("https://asia-northeast1-m2m-core.cloudfunctions.net/kanetsuna_gas_push_github");
+  PushToGitHub();
 
   const accessToken = GetToken();
   const sheetId = "1YvHj-CY6i64VlK4m7BMCK9cCrBHepYZG-qDec1YnFeo";
@@ -51,6 +51,7 @@ function ImportOperationsAPIResponse(accessToken, sheetId) {
   for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
     const currentPayloadForSearch = CreatePayload({startDate}, {endDate}, {filter}, {page:currentPage}, {pageSize});
     const jsonData = CallApi(accessToken, searchApiUrl, "POST", currentPayloadForSearch);
+    
     OutputJsonToSheet(jsonData, sheetId, "operations");
   }
 }
