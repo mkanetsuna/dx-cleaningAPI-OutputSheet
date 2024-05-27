@@ -21,7 +21,8 @@ function ImportOperationsAPIResponse() {
     OutputJsonToSheet(jsonData, sheetId, sheetName);
   }
   ImportPlacementsAPIResponse();
-  ImportCheckinAPIResponse()
+  ImportCheckinAPIResponse();
+  ImportStatusAPIResponse()
 }
 
 
@@ -58,7 +59,7 @@ function ImportStatusAPIResponse() {
   const cleaningIds = GetColumnDataByHeader("id", sheetId, "operations");
   const payloadForStatus = CreatePayload({cleaningIds});
   const jsonData = CallApi(accessToken, statusApiUrl, "POST", payloadForStatus);
-  const transformedData = TransformCleaningStatus(jsonData);
+  const transformedData = TransformData(jsonData, "cleaningId", "status");
   OutputJsonToSheet(transformedData, sheetId, "status");
 }
 
@@ -71,6 +72,6 @@ function ImportCheckinAPIResponse() {
   const cleaningIds = GetColumnDataByHeader("id", sheetId, "operations");
   const payloadForCleanings = CreatePayload({cleaningIds});
   const jsonData = CallApi(accessToken, placementsApiUrl, "POST", payloadForCleanings);
-  const transformedData = TransformCheckinData(jsonData);
+  const transformedData = TransformData(jsonData, "cleaningId", "hasCheckinOnDate");
   OutputJsonToSheet(transformedData, sheetId, "checkin");
 }
