@@ -21,9 +21,9 @@ function ImportOperationsAPIResponse() {
     const jsonData = CallApi(accessToken, searchApiUrl, "POST", currentPayloadForSearch);
     OutputJsonToSheet(jsonData, sheetId, sheetName);
   }
-  ImportPlacementsAPIResponse();
-  ImportCheckinAPIResponse();
-  ImportStatusAPIResponse()
+  //ImportPlacementsAPIResponse();
+  //ImportCheckinAPIResponse();
+  //ImportStatusAPIResponse();
 }
 
 
