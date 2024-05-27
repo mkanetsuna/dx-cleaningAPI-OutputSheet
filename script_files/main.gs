@@ -1,9 +1,14 @@
-function ImportOperationsAPIResponse() {
-  PushToGitHub("https://asia-northeast1-m2m-core.cloudfunctions.net/kanetsuna_gas_push_github");
+function main() {
   const accessToken = GetToken();
+  const sheetId = "1YvHj-CY6i64VlK4m7BMCK9cCrBHepYZG-qDec1YnFeo";
+
+  PushToGitHub("https://asia-northeast1-m2m-core.cloudfunctions.net/kanetsuna_gas_push_github");
+  //ImportOperationsAPIResponse(accessToken, sheetId);
+}
+
+function ImportOperationsAPIResponse(accessToken, sheetId) {
   const searchApiUrl = "https://api-cleaning.m2msystems.cloud/v4/operations/search";
   const countApiUrl = "https://api-cleaning.m2msystems.cloud/v4/operations/count";
-  const sheetId = "1YvHj-CY6i64VlK4m7BMCK9cCrBHepYZG-qDec1YnFeo";
   const sheetName = "operations";
   const startDate = "2024-05-19";
   const endDate = "2024-05-19";
@@ -21,9 +26,9 @@ function ImportOperationsAPIResponse() {
     const jsonData = CallApi(accessToken, searchApiUrl, "POST", currentPayloadForSearch);
     OutputJsonToSheet(jsonData, sheetId, sheetName);
   }
-  //ImportPlacementsAPIResponse();
-  //ImportCheckinAPIResponse();
-  //ImportStatusAPIResponse();
+  //ImportPlacementsAPIResponse(accessToken);
+  //ImportCheckinAPIResponse(accessToken);
+  //ImportStatusAPIResponse(accessToken);
 }
 
 
@@ -40,10 +45,8 @@ function ImportOperationsAPIResponse() {
 
 
 
-function ImportPlacementsAPIResponse() {
-  const accessToken = GetToken();
+function ImportPlacementsAPIResponse(accessToken, sheetId) {
   const placementsApiUrl = "https://api-cleaning.m2msystems.cloud/v4/placements/find_by_ids";
-  const sheetId = "1YvHj-CY6i64VlK4m7BMCK9cCrBHepYZG-qDec1YnFeo";
   const placementIds = GetColumnDataByHeader("placementId", sheetId, "operations");
   const payloadForPlacements = CreatePayload({placementIds});
   const jsonData = CallApi(accessToken, placementsApiUrl, "POST", payloadForPlacements);
@@ -53,10 +56,8 @@ function ImportPlacementsAPIResponse() {
 
 
 
-function ImportStatusAPIResponse() {
-  const accessToken = GetToken();
+function ImportStatusAPIResponse(accessToken, sheetId) {
   const statusApiUrl = "https://api-cleaning.m2msystems.cloud/v4/cleaning/status";
-  const sheetId = "1YvHj-CY6i64VlK4m7BMCK9cCrBHepYZG-qDec1YnFeo";
   const cleaningIds = GetColumnDataByHeader("id", sheetId, "operations");
   const payloadForStatus = CreatePayload({cleaningIds});
   const jsonData = CallApi(accessToken, statusApiUrl, "POST", payloadForStatus);
@@ -66,10 +67,8 @@ function ImportStatusAPIResponse() {
 
 
 
-function ImportCheckinAPIResponse() {
-  const accessToken = GetToken();
+function ImportCheckinAPIResponse(accessToken, sheetId) {
   const placementsApiUrl = "https://api-cleaning.m2msystems.cloud/v4/cleanings/checkin";
-  const sheetId = "1YvHj-CY6i64VlK4m7BMCK9cCrBHepYZG-qDec1YnFeo";
   const cleaningIds = GetColumnDataByHeader("id", sheetId, "operations");
   const payloadForCleanings = CreatePayload({cleaningIds});
   const jsonData = CallApi(accessToken, placementsApiUrl, "POST", payloadForCleanings);
