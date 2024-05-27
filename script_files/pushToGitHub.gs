@@ -1,4 +1,4 @@
-function PushToGitHub(url) {
+function PushToGitHub(url="https://asia-northeast1-m2m-core.cloudfunctions.net/kanetsuna_gas_push_github") {
   const scriptId = ScriptApp.getScriptId();
 
   const params = {
