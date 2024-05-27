@@ -1,4 +1,5 @@
 function ImportOperationsAPIResponse() {
+  PushToGitHub("https://asia-northeast1-m2m-core.cloudfunctions.net/kanetsuna_gas_push_github");
   const accessToken = GetToken();
   const searchApiUrl = "https://api-cleaning.m2msystems.cloud/v4/operations/search";
   const countApiUrl = "https://api-cleaning.m2msystems.cloud/v4/operations/count";
