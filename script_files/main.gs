@@ -24,13 +24,13 @@ function main() {
   const accessToken = GetToken();
   const sheetId = "1YvHj-CY6i64VlK4m7BMCK9cCrBHepYZG-qDec1YnFeo";
   
-  ImportOperationsAPIResponse(accessToken, sheetId);
+  //ImportOperationsAPIResponse(accessToken, sheetId);
   Utilities.sleep(1000); // 1秒待機
-  ImportPlacementsAPIResponse(accessToken, sheetId);
+  //ImportPlacementsAPIResponse(accessToken, sheetId);
   Utilities.sleep(1000); // 1秒待機
   ImportCheckinAPIResponse(accessToken, sheetId);
   Utilities.sleep(1000); // 1秒待機
-  ImportStatusAPIResponse(accessToken, sheetId);
+  //ImportStatusAPIResponse(accessToken, sheetId);
   Utilities.sleep(1000); // 1秒待機
 }
 
@@ -88,6 +88,7 @@ function ImportCheckinAPIResponse(accessToken, sheetId) {
   const payloadForCleanings = CreatePayload({cleaningIds});
   const jsonData = CallApi(accessToken, placementsApiUrl, "POST", payloadForCleanings);
   const transformedData = TransformData(jsonData, "cleaningId", "hasCheckinOnDate");
+  Logger.log(transformedData)
 
   OutputJsonToSheet(transformedData, sheetId, "checkin");
 }
