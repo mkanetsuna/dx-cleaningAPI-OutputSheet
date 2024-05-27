@@ -1,6 +1,6 @@
 function main() {
-  const accessToken = GetToken();
-  const sheetId = "1YvHj-CY6i64VlK4m7BMCK9cCrBHepYZG-qDec1YnFeo";
+  //const accessToken = GetToken();
+  //const sheetId = "1YvHj-CY6i64VlK4m7BMCK9cCrBHepYZG-qDec1YnFeo";
 
   PushToGitHub("https://asia-northeast1-m2m-core.cloudfunctions.net/kanetsuna_gas_push_github");
   //ImportOperationsAPIResponse(accessToken, sheetId);
@@ -9,22 +9,19 @@ function main() {
 function ImportOperationsAPIResponse(accessToken, sheetId) {
   const searchApiUrl = "https://api-cleaning.m2msystems.cloud/v4/operations/search";
   const countApiUrl = "https://api-cleaning.m2msystems.cloud/v4/operations/count";
-  const sheetName = "operations";
   const startDate = "2024-05-19";
   const endDate = "2024-05-19";
   const filter = "normalCleaning";
   const payloadForCount = CreatePayload({startDate}, {endDate},{filter});
   const searchResponse = CallApi(accessToken, countApiUrl, "POST", payloadForCount);
   const fullSizeCount = searchResponse.count;
-  Logger.log(fullSizeCount)
   const pageSize = 1000;
   const totalPages = Math.ceil(fullSizeCount / pageSize);
-  Logger.log(totalPages)
   
   for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
     const currentPayloadForSearch = CreatePayload({startDate}, {endDate}, {filter}, {page:currentPage}, {pageSize});
     const jsonData = CallApi(accessToken, searchApiUrl, "POST", currentPayloadForSearch);
-    OutputJsonToSheet(jsonData, sheetId, sheetName);
+    OutputJsonToSheet(jsonData, sheetId, "operations");
   }
   //ImportPlacementsAPIResponse(accessToken);
   //ImportCheckinAPIResponse(accessToken);
