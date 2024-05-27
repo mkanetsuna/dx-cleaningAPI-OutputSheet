@@ -3,7 +3,7 @@ function PushToGitHub() {
   const scriptId = ScriptApp.getScriptId();
   const params = {
     script_id: scriptId
-  };//h
+  };
   const sendUrl = url + '?' + CreateQueryString(params);
   UrlFetchApp.fetch(sendUrl, {
     method: 'get'
