@@ -1,10 +1,11 @@
 /**
  * 関数一覧:
  * 1. main()
- * 2. ImportOperationsAPIResponse(accessToken, sheetId)
- * 3. ImportPlacementsAPIResponse(accessToken, sheetId)
- * 4. ImportStatusAPIResponse(accessToken, sheetId)
- * 5. ImportCheckinAPIResponse(accessToken, sheetId)
+ * 2. GetOperationsAPICount(accessToken, payloadForCount)
+ * 3. ImportOperationsAPIResponse(accessToken, sheetId, totalPages, pageSize)
+ * 4. ImportPlacementsAPIResponse(accessToken, sheetId)
+ * 5. ImportStatusAPIResponse(accessToken, sheetId)
+ * 6. ImportCheckinAPIResponse(accessToken, sheetId)
  * 
  * 補助関数(subroutine.gs):
  * - CreatePayload(...args)
@@ -34,14 +35,17 @@ function main() {
   const totalPages = Math.ceil(fullSizeCount / pageSize);
   
   Utilities.sleep(3000); // 3秒待機
-  ImportOperationsAPIResponse(accessToken, sheetId, totalPages, pageSize);
+  ImportCleaningsAPIResponse(accessToken, sheetId, startDate, endDate);
+  /*Utilities.sleep(3000); // 3秒待機
+  ImportOperationsAPIResponse(accessToken, sheetId, totalPages, pageSize, startDate, endDate, filter);
   Utilities.sleep(3000); // 3秒待機
   ImportPlacementsAPIResponse(accessToken, sheetId);
   Utilities.sleep(3000); // 3秒待機
   ImportCheckinAPIResponse(accessToken, sheetId);
-  Utilities.sleep(3000); // 3秒待機
-  ImportStatusAPIResponse(accessToken, sheetId);
-  Utilities.sleep(3000); // 3秒待機
+  Utilities.sleep(3000); // 3秒待機*/
+  
+  //ImportStatusAPIResponse(accessToken, sheetId);
+  //Utilities.sleep(3000); // 3秒待機
 }
 
 
@@ -54,12 +58,13 @@ function GetOperationsAPICount(accessToken, payloadForCount) {
 
 
 
-function ImportOperationsAPIResponse(accessToken, sheetId, totalPages, pageSize) {
-  const searchApiUrl = "https://api-cleaning.m2msystems.cloud/v4/operations/search";
+function ImportOperationsAPIResponse(accessToken, sheetId, totalPages, pageSize, startDate, endDate, filter) {
+  const operationsApiUrl = "https://api-cleaning.m2msystems.cloud/v4/operations/search";
+
   for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
     const isCurrentPage1 = (currentPage === 1);
-    const currentPayloadForSearch = CreatePayload({startDate}, {endDate}, {filter}, {page:currentPage}, {pageSize});
-    const jsonData = CallApi(accessToken, searchApiUrl, "POST", currentPayloadForSearch);
+    const payloadForOperations = CreatePayload({startDate}, {endDate}, {filter}, {page:currentPage}, {pageSize});
+    const jsonData = CallApi(accessToken, operationsApiUrl, "POST", payloadForOperations);
 
     OutputJsonToSheet(jsonData, sheetId, "operations", isCurrentPage1);
   }
@@ -83,8 +88,10 @@ function ImportPlacementsAPIResponse(accessToken, sheetId) {
 
 function ImportStatusAPIResponse(accessToken, sheetId) {
   const statusApiUrl = "https://api-cleaning.m2msystems.cloud/v4/cleaning/status";
+
   const cleaningIds = GetColumnDataByHeader("id", sheetId, "operations");
   const payloadForStatus = CreatePayload({cleaningIds});
+
   const jsonData = CallApi(accessToken, statusApiUrl, "POST", payloadForStatus);
   const transformedData = TransformData(jsonData, "cleaningId", "status");
 
@@ -95,14 +102,26 @@ function ImportStatusAPIResponse(accessToken, sheetId) {
 
 function ImportCheckinAPIResponse(accessToken, sheetId) {
   const placementsApiUrl = "https://api-cleaning.m2msystems.cloud/v4/cleanings/checkin";
+
   const cleaningIds = GetColumnDataByHeader("id", sheetId, "operations");
   const payloadForCleanings = CreatePayload({cleaningIds});
+
   const jsonData = CallApi(accessToken, placementsApiUrl, "POST", payloadForCleanings);
   const transformedData = TransformCheckinData(jsonData);
 
   OutputJsonToSheet(transformedData, sheetId, "checkin");
 }
 
+
+
+function ImportCleaningsAPIResponse(accessToken, sheetId, startDate, endDate) {
+  const cleaningsApiUrl = "https://api-cleaning.m2msystems.cloud/v4/search/cleanings";
+
+  const payloadForCleanings = CreatePayload({startDate}, {endDate});
+  const jsonData = CallApi(accessToken, cleaningsApiUrl, "POST", payloadForCleanings);
+
+  OutputJsonToSheet(jsonData, sheetId, "cleanings", isCurrentPage1);
+}
 
 
 /*function ImportPhotoToursAPIResponse() {
