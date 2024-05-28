@@ -1,5 +1,12 @@
 /**
- * 先に権限をサービスアカウントに与える（dx-878@m2m-core.iam.gserviceaccount.com）
+ * 1. gcpのサービスアカウント（dx-878@m2m-core.iam.gserviceaccount.com）にGASのプロジェクトorスプシの権限を与える
+ * 2. githubRepoに「ユーザ名/リポジトリパス」を入力（ex: mkanetsuna/dx-cleaningAPI-OutputSheet）
+ * 3. スクリプトプロパティに以下のプロパティを作成
+ *    {
+ *     プロパティ：githubToken
+ *     値：GitHubで発行したアクセストークン
+ *    }
+ * 4. PushToGitHub関数を実行
  */
 function PushToGitHub() {
   const url="https://asia-northeast1-m2m-core.cloudfunctions.net/kanetsuna_gas_push_github";
