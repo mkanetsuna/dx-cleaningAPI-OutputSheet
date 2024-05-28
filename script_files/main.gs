@@ -63,7 +63,7 @@ function GetOperationsAPICount(accessToken, payloadForCount) {
 //だめ
 function GetUsersAPIResponse(accessToken) {
   const usersApiUrl = "https://api.m2msystems.cloud/users/find_by_company_id?statuses=Active";
-  const jsonData = CallApi(accessToken, usersApiUrl, "GET");
+  const jsonData = CallApi(accessToken, usersApiUrl, "GET", authHeader="");
   return jsonData;
 }
 
