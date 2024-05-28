@@ -24,13 +24,14 @@ function main() {
   const accessToken = GetToken();
   const sheetId = "1YvHj-CY6i64VlK4m7BMCK9cCrBHepYZG-qDec1YnFeo";
   
-  //ImportOperationsAPIResponse(accessToken, sheetId);
+  ImportOperationsAPIResponse(accessToken, sheetId);
   Utilities.sleep(1000); // 1秒待機
-  //ImportPlacementsAPIResponse(accessToken, sheetId);
+  ImportPlacementsAPIResponse(accessToken, sheetId);
   Utilities.sleep(1000); // 1秒待機
   ImportCheckinAPIResponse(accessToken, sheetId);
   Utilities.sleep(1000); // 1秒待機
-  //ImportStatusAPIResponse(accessToken, sheetId);
+  //hasCheckinOnDateをなんとかする
+  ImportStatusAPIResponse(accessToken, sheetId);
   Utilities.sleep(1000); // 1秒待機
 }
 
@@ -87,8 +88,7 @@ function ImportCheckinAPIResponse(accessToken, sheetId) {
   const cleaningIds = GetColumnDataByHeader("id", sheetId, "operations");
   const payloadForCleanings = CreatePayload({cleaningIds});
   const jsonData = CallApi(accessToken, placementsApiUrl, "POST", payloadForCleanings);
-  const transformedData = TransformData(jsonData, "cleaningId", "hasCheckinOnDate");
-  Logger.log(transformedData)
+  const transformedData = TransformCheckinData(jsonData);
 
   OutputJsonToSheet(transformedData, sheetId, "checkin");
 }
