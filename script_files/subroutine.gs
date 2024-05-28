@@ -88,7 +88,7 @@ function OutputJsonToSheet(jsonData, sheetId, sheetName, isCurrentPage1=true) {
 
 function CallApi(accessToken, apiUrl, method, payload=null, authHeader='Bearer ') {
   const headers = {
-    'Authorization': authHeader + accessToken,
+    'AuthorizationX-Access-Token': authHeader + accessToken,
     'Content-Type': 'application/json'
   };
   const options = {
