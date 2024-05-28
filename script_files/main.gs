@@ -34,7 +34,7 @@ function main() {
   const totalPages = Math.ceil(fullSizeCount / pageSize);
   
   Utilities.sleep(3000); // 3秒待機
-  ImportOperationsAPIResponse(accessToken, sheetId, totalPages);
+  ImportOperationsAPIResponse(accessToken, sheetId, totalPages, pageSize);
   Utilities.sleep(3000); // 3秒待機
   ImportPlacementsAPIResponse(accessToken, sheetId);
   Utilities.sleep(3000); // 3秒待機
