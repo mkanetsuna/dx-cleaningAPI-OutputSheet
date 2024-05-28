@@ -35,9 +35,9 @@ function main() {
   const totalPages = Math.ceil(fullSizeCount / pageSize);
   
   Utilities.sleep(3000); // 3秒待機
-  GetUsersAPIResponse(accessToken);
+  //GetUsersAPIResponse(accessToken);
   //Utilities.sleep(3000); // 3秒待機
-  //ImportDelegateCleaningsAPIResponse(accessToken, sheetId, startDate, endDate)
+  ImportDelegateCleaningsAPIResponse(accessToken, sheetId, startDate, endDate)
   //ImportCleaningsAPIResponse(accessToken, sheetId, startDate, endDate);
   /*Utilities.sleep(3000); // 3秒待機
   ImportOperationsAPIResponse(accessToken, sheetId, totalPages, pageSize, startDate, endDate, filter);
@@ -60,7 +60,7 @@ function GetOperationsAPICount(accessToken, payloadForCount) {
 }
 
 
-
+//だめ
 function GetUsersAPIResponse(accessToken) {
   const usersApiUrl = "https://api.m2msystems.cloud/users/find_by_company_id?statuses=Active";
   const jsonData = CallApi(accessToken, usersApiUrl, "GET", authHeader="");
