@@ -25,14 +25,14 @@ function main() {
   const sheetId = "1YvHj-CY6i64VlK4m7BMCK9cCrBHepYZG-qDec1YnFeo";
   
   ImportOperationsAPIResponse(accessToken, sheetId);
-  Utilities.sleep(3000); // 1秒待機
+  Utilities.sleep(3000); // 3秒待機
   ImportPlacementsAPIResponse(accessToken, sheetId);
-  Utilities.sleep(3000); // 1秒待機
+  Utilities.sleep(3000); // 3秒待機
   ImportCheckinAPIResponse(accessToken, sheetId);
-  Utilities.sleep(3000); // 1秒待機
+  Utilities.sleep(3000); // 3秒待機
   //hasCheckinOnDateをなんとかする
   ImportStatusAPIResponse(accessToken, sheetId);
-  Utilities.sleep(3000); // 1秒待機
+  Utilities.sleep(3000); // 3秒待機
 }
 
 
