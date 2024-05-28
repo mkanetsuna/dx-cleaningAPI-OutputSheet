@@ -32,7 +32,7 @@ function main() {
   //const operationsApiCount = GetOperationsAPICount(accessToken, payloadForCount);
   //const fullSizeCount = operationsApiCount.count;
   const pageSize = 1000;
-  const totalPages = Math.ceil(fullSizeCount / pageSize);
+  //const totalPages = Math.ceil(fullSizeCount / pageSize);
   
   Utilities.sleep(3000); // 3秒待機
   GetUsersAPIResponse(accessToken);
