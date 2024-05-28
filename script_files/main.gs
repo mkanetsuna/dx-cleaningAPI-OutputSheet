@@ -29,10 +29,10 @@ function main() {
   const filter = "normalCleaning";
   const payloadForCount = CreatePayload({startDate}, {endDate},{filter});
 
-  //const operationsApiCount = GetOperationsAPICount(accessToken, payloadForCount);
-  //const fullSizeCount = operationsApiCount.count;
+  const operationsApiCount = GetOperationsAPICount(accessToken, payloadForCount);
+  const fullSizeCount = operationsApiCount.count;
   const pageSize = 1000;
-  //const totalPages = Math.ceil(fullSizeCount / pageSize);
+  const totalPages = Math.ceil(fullSizeCount / pageSize);
   
   Utilities.sleep(3000); // 3秒待機
   GetUsersAPIResponse(accessToken);
@@ -66,8 +66,7 @@ function GetUsersAPIResponse(accessToken) {
   const params = {
     statuses: "Active"
   };
-  const sendUrl = usersApiUrl + '?' + CreateQueryString(params);
-  jsonData = CallApi(accessToken, sendUrl, "GET", authHeader="");accessToken, apiUrl, method, payload=null, authHeader='Bearer '
+  jsonData = CallApi(accessToken, usersApiUrl, "GET", params);
 }
 
 
