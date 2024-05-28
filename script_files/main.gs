@@ -29,7 +29,7 @@ function main() {
   const filter = "normalCleaning";
   const payloadForCount = CreatePayload({startDate}, {endDate},{filter});
 
-  const operationsApiCount = GetOperationsAPICount(accessToken, payloadForCount);
+  //const operationsApiCount = GetOperationsAPICount(accessToken, payloadForCount);
   const fullSizeCount = operationsApiCount.count;
   const pageSize = 1000;
   const totalPages = Math.ceil(fullSizeCount / pageSize);
@@ -67,7 +67,7 @@ function GetUsersAPIResponse(accessToken) {
     statuses: "Active"
   };
   const sendUrl = usersApiUrl + '?' + CreateQueryString(params);
-  jsonData = CallApi(accessToken, sendUrl, "GET");
+  jsonData = CallApi(accessToken, sendUrl, "GET", authHeader="");accessToken, apiUrl, method, payload=null, authHeader='Bearer '
 }
 
 
