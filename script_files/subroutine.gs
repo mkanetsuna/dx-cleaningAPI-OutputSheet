@@ -67,18 +67,21 @@ function FlattenObject(obj, parent = '', res = {}) {
 
 
 
-function OutputJsonToSheet(jsonData, sheetId, sheetName) {
+function OutputJsonToSheet(jsonData, sheetId, sheetName, isCurrentPage1) {
   const spreadsheet = SpreadsheetApp.openById(sheetId);
   const sheet = spreadsheet.getSheetByName(sheetName);
   if (!sheet)
     throw new Error('Sheet with name ' + sheetName + ' does not exist in the spreadsheet.');
-  sheet.clear();
   const keys = Object.keys(jsonData[0]);
-  for (let i = 0; i < keys.length; i++)
-    sheet.getRange(1, i + 1).setValue(keys[i]);
+  const startRow = (isCurrentPage1) ? 1 : sheet.getLastRow() + 1;
+  if (isCurrentPage1) {
+    sheet.clear();
+    for (let i = 0; i < keys.length; i++)
+      sheet.getRange(1, i + 1).setValue(keys[i]);
+  }
   for (let row = 0; row < jsonData.length; row++)
     for (let col = 0; col < keys.length; col++)
-      sheet.getRange(row + 2, col + 1).setValue(jsonData[row][keys[col]]);
+      sheet.getRange(startRow + row + 1, col + 1).setValue(jsonData[row][keys[col]]);
 }
 
 
