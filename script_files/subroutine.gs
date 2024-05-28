@@ -4,7 +4,7 @@
  * 2. TransformData(data, keyName1, keyName2)
  * 3. TransformCheckinData(data)
  * 4. FlattenObject(obj, parent = '', res = {})
- * 5. OutputJsonToSheet(jsonData, sheetId, sheetName)
+ * 5. OutputJsonToSheet(jsonData, sheetId, sheetName, isCurrentPage1)
  * 6. CallApi(accessToken, apiUrl, method, payload=null)
  * 7. GetToken()
  * 8. GetColumnDataByHeader(searchString, sheetId, sheetName)
@@ -67,7 +67,7 @@ function FlattenObject(obj, parent = '', res = {}) {
 
 
 
-function OutputJsonToSheet(jsonData, sheetId, sheetName, isCurrentPage1) {
+function OutputJsonToSheet(jsonData, sheetId, sheetName, isCurrentPage1=true) {
   const spreadsheet = SpreadsheetApp.openById(sheetId);
   const sheet = spreadsheet.getSheetByName(sheetName);
   if (!sheet)
