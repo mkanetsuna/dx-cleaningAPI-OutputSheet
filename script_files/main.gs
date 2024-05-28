@@ -23,37 +23,45 @@ function main() {
 
   const accessToken = GetToken();
   const sheetId = "1YvHj-CY6i64VlK4m7BMCK9cCrBHepYZG-qDec1YnFeo";
+  const startDate = "2024-05-19";
+  const endDate = "2024-05-19";
+  const filter = "normalCleaning";
+  const payloadForCount = CreatePayload({startDate}, {endDate},{filter});
+
+  const operationsApiCount = GetOperationsAPICount(accessToken, payloadForCount);
+  const fullSizeCount = operationsApiCount.count;
+  const pageSize = 1000;
+  const totalPages = Math.ceil(fullSizeCount / pageSize);
   
-  ImportOperationsAPIResponse(accessToken, sheetId);
+  Utilities.sleep(3000); // 3秒待機
+  ImportOperationsAPIResponse(accessToken, sheetId, totalPages);
   Utilities.sleep(3000); // 3秒待機
   ImportPlacementsAPIResponse(accessToken, sheetId);
   Utilities.sleep(3000); // 3秒待機
   ImportCheckinAPIResponse(accessToken, sheetId);
   Utilities.sleep(3000); // 3秒待機
-  //hasCheckinOnDateをなんとかする
   ImportStatusAPIResponse(accessToken, sheetId);
   Utilities.sleep(3000); // 3秒待機
 }
 
 
 
-function ImportOperationsAPIResponse(accessToken, sheetId) {
-  const searchApiUrl = "https://api-cleaning.m2msystems.cloud/v4/operations/search";
+function GetOperationsAPICount(accessToken, payloadForCount) {
   const countApiUrl = "https://api-cleaning.m2msystems.cloud/v4/operations/count";
-  const startDate = "2024-05-19";
-  const endDate = "2024-05-19";
-  const filter = "normalCleaning";
-  const payloadForCount = CreatePayload({startDate}, {endDate},{filter});
-  const searchResponse = CallApi(accessToken, countApiUrl, "POST", payloadForCount);
-  const fullSizeCount = searchResponse.count;
-  const pageSize = 1000;
-  const totalPages = Math.ceil(fullSizeCount / pageSize);
-  
+  const apiResponse = CallApi(accessToken, countApiUrl, "POST", payloadForCount);
+  return apiResponse.count;
+}
+
+
+
+function ImportOperationsAPIResponse(accessToken, sheetId, totalPages, pageSize) {
+  const searchApiUrl = "https://api-cleaning.m2msystems.cloud/v4/operations/search";
   for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
+    const isCurrentPage1 = (currentPage === 1);
     const currentPayloadForSearch = CreatePayload({startDate}, {endDate}, {filter}, {page:currentPage}, {pageSize});
     const jsonData = CallApi(accessToken, searchApiUrl, "POST", currentPayloadForSearch);
-    
-    OutputJsonToSheet(jsonData, sheetId, "operations");
+
+    OutputJsonToSheet(jsonData, sheetId, "operations", isCurrentPage1);
   }
 }
 
@@ -61,8 +69,10 @@ function ImportOperationsAPIResponse(accessToken, sheetId) {
 
 function ImportPlacementsAPIResponse(accessToken, sheetId) {
   const placementsApiUrl = "https://api-cleaning.m2msystems.cloud/v4/placements/find_by_ids";
+
   const placementIds = GetColumnDataByHeader("placementId", sheetId, "operations");
   const payloadForPlacements = CreatePayload({placementIds});
+
   const jsonData = CallApi(accessToken, placementsApiUrl, "POST", payloadForPlacements);
   const flatData = jsonData.placements.map(item => FlattenObject(item));
 
