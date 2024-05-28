@@ -66,7 +66,7 @@ function GetUsersAPIResponse(accessToken) {
   const params = {
     statuses: "Active"
   };
-  jsonData = CallApi(accessToken, usersApiUrl, "GET", params);
+  jsonData = CallApi(accessToken, usersApiUrl, "GET", params, authHeader="");
 }
 
 
