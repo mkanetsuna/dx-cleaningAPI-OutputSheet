@@ -62,11 +62,8 @@ function GetOperationsAPICount(accessToken, payloadForCount) {
 
 
 function GetUsersAPIResponse(accessToken) {
-  const usersApiUrl = "https://api.m2msystems.cloud/users/find_by_company_id";
-  const params = {
-    statuses: "Active"
-  };
-  jsonData = CallApi(accessToken, usersApiUrl, "GET", params, authHeader="");
+  const usersApiUrl = "https://api.m2msystems.cloud/users/find_by_company_id?statuses=Active";
+  const jsonData = CallApi(accessToken, usersApiUrl, "GET", authHeader="");
 }
 
 
