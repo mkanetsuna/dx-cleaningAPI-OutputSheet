@@ -43,7 +43,7 @@ function main() {
   Utilities.sleep(3000); // 3秒待機
   ImportCheckinAPIResponse(accessToken, sheetId);
   Utilities.sleep(3000); // 3秒待機*/
-  
+
   //ImportStatusAPIResponse(accessToken, sheetId);
   //Utilities.sleep(3000); // 3秒待機
 }
@@ -120,7 +120,7 @@ function ImportCleaningsAPIResponse(accessToken, sheetId, startDate, endDate) {
   const payloadForCleanings = CreatePayload({startDate}, {endDate});
   const jsonData = CallApi(accessToken, cleaningsApiUrl, "POST", payloadForCleanings);
 
-  OutputJsonToSheet(jsonData, sheetId, "cleanings", isCurrentPage1);
+  OutputJsonToSheet(jsonData, sheetId, "cleanings");
 }
 
 
