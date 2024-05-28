@@ -35,7 +35,8 @@ function main() {
   const totalPages = Math.ceil(fullSizeCount / pageSize);
   
   Utilities.sleep(3000); // 3秒待機
-  ImportCleaningsAPIResponse(accessToken, sheetId, startDate, endDate);
+  ImportDelegateCleaningsAPIResponse(accessToken, sheetId, startDate, endDate)
+  //ImportCleaningsAPIResponse(accessToken, sheetId, startDate, endDate);
   /*Utilities.sleep(3000); // 3秒待機
   ImportOperationsAPIResponse(accessToken, sheetId, totalPages, pageSize, startDate, endDate, filter);
   Utilities.sleep(3000); // 3秒待機
@@ -122,6 +123,19 @@ function ImportCleaningsAPIResponse(accessToken, sheetId, startDate, endDate) {
 
   OutputJsonToSheet(jsonData, sheetId, "cleanings");
 }
+
+
+
+function ImportDelegateCleaningsAPIResponse(accessToken, sheetId, startDate, endDate) {
+  const delegateCleaningsApiUrl = "https://api-cleaning.m2msystems.cloud/v3/search/delegate_cleanings";
+
+  const payloadFordelegateCleanings = CreatePayload({startDate}, {endDate});
+  const jsonData = CallApi(accessToken, delegateCleaningsApiUrl, "POST", payloadFordelegateCleanings);
+
+  OutputJsonToSheet(jsonData, sheetId, "delegate_cleanings");
+}
+
+
 
 
 /*function ImportPhotoToursAPIResponse() {
