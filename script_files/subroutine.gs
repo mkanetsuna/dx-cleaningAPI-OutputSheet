@@ -2,11 +2,12 @@
  * 関数一覧:
  * 1. CreatePayload(...args)
  * 2. TransformData(data, keyName1, keyName2)
- * 3. FlattenObject(obj, parent = '', res = {})
- * 4. OutputJsonToSheet(jsonData, sheetId, sheetName)
- * 5. CallApi(accessToken, apiUrl, method, payload=null)
- * 6. GetToken()
- * 7. GetColumnDataByHeader(searchString, sheetId, sheetName)
+ * 3. TransformCheckinData(data)
+ * 4. FlattenObject(obj, parent = '', res = {})
+ * 5. OutputJsonToSheet(jsonData, sheetId, sheetName)
+ * 6. CallApi(accessToken, apiUrl, method, payload=null)
+ * 7. GetToken()
+ * 8. GetColumnDataByHeader(searchString, sheetId, sheetName)
  */
 
 
@@ -32,6 +33,21 @@ function TransformData(data, keyName1, keyName2) {
       newObject[keyName2] = data[key];
       transformedData.push(newObject);
     }
+  return transformedData;
+}
+
+
+
+function TransformCheckinData(data) {
+  var transformedData = [];
+  for (var key in data) {
+    if (data.hasOwnProperty(key)) {
+      transformedData.push({
+        cleaningId: key,
+        hasCheckinOnDate: data[key].hasCheckinOnDate
+      });
+    }
+  }
   return transformedData;
 }
 
