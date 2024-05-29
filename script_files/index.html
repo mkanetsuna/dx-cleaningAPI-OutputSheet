@@ -82,7 +82,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="resizeDialog()">
     <div class="sidebar">
         <h2>シートを選択</h2>
         <ul id="sheet-list">
@@ -135,6 +135,13 @@
             loadSheet(sheets[0]);
         });
 
+        function resizeDialog() {
+          const width = window.innerWidth * 1;
+          const height = window.innerHeight * 1;
+          google.script.host.setWidth(width);
+          google.script.host.setHeight(height);
+        }
+        window.onresize = resizeDialog;
 
 
         // シートの読み込み
